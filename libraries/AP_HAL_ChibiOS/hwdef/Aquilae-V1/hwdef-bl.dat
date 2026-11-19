@@ -1,0 +1,17 @@
+# bootloader hw definition file for processing by chibios_hwdef.py
+
+include common.inc
+
+# You must set FLASH_BOOTLOADER_LOAD_KB to
+# the location in kilobytes where the main
+# code will start. This should be the same
+# as FLASH_RESERVE_START_KB from your main
+# hwdef.dat
+FLASH_BOOTLOADER_LOAD_KB 128
+
+# you must set FLASH_RESERVE_START_KB to zero
+# so the bootloader is placed at the start of flash
+FLASH_RESERVE_START_KB 0
+
+# order of UARTs (and USB)
+SERIAL_ORDER OTG1 USART3 USART6
