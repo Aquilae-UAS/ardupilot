@@ -2,12 +2,17 @@
 
 include common.inc
 
-# Localtion where code will be placed
+# Location where code will be placed
 # must be the same as FLASH_BOOTLOADER_LOAD_KB
 # in hwdef-bl.dat
 FLASH_RESERVE_START_KB 128
 
 define HAL_STORAGE_SIZE 32768
+
+# store parameters in internal flash (sectors 14 and 15), no SD card or FRAM
+# keep firmware and crash log out of the storage sectors (2 x 128 KB)
+STORAGE_FLASH_PAGE 14
+FLASH_RESERVE_END_KB 256
 
 # disable ADC for now
 define HAL_USE_ADC FALSE
@@ -48,6 +53,8 @@ PB11 ETH_RMII_TX_EN   ETH1
 
 define BOARD_PHY_ID MII_LAN8742A_ID
 define BOARD_PHY_RMII
+
+
 
 # SPI1 (sensors)
 PB3 SPI1_SCK  SPI1
