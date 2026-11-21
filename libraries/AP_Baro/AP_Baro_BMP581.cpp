@@ -20,7 +20,11 @@
 
 extern const AP_HAL::HAL &hal;
 
-#define BMP581_ID                     0x50
+#ifdef AP_BARO_BMP581_BMP585_MODE
+    #define BMP581_ID                     0x51
+#else
+    #define BMP581_ID                     0x50
+#endif
 
 #define BMP581_REG_CHIP_ID            0x01
 #define BMP581_REG_REV_ID             0x02
