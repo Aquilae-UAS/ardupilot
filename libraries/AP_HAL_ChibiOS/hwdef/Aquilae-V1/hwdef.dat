@@ -12,7 +12,6 @@ define HAL_STORAGE_SIZE 32768
 # store parameters in internal flash (sectors 14 and 15), no SD card or FRAM
 # keep firmware and crash log out of the storage sectors (2 x 128 KB)
 STORAGE_FLASH_PAGE 14
-FLASH_RESERVE_END_KB 256
 
 # disable ADC for now
 define HAL_USE_ADC FALSE
@@ -60,6 +59,8 @@ define BOARD_PHY_RMII
 PB3 SPI1_SCK  SPI1
 PB4 SPI1_MISO SPI1
 PD7 SPI1_MOSI SPI1
+# MISO/MOSI are crossed on the PCB, swap them in the SPI peripheral (SPI_CFG2_IOSWP)
+define HAL_SPI1_SWAP_IO 1
 
 # SPI4 (expansion J13)
 #PB10 SPI2_SCK  SPI2
@@ -79,13 +80,14 @@ I2C_ORDER I2C1
 
 SPIDEV icm40609 SPI1 DEVID1 IMU1_CS MODE3 4*MHZ 8*MHZ
 SPIDEV bmi270   SPI1 DEVID1 IMU2_CS MODE3 4*MHZ 8*MHZ
-SPIDEV bmi585   SPI1 DEVID1 BARO_CS MODE3 4*MHZ 8*MHZ
+SPIDEV bmp585   SPI1 DEVID1 BARO_CS MODE3 4*MHZ 8*MHZ
 #SPIDEV mmc5983  SPI1 DEVID1 MAGT_CS MODE3 4*MHZ 8*MHZ
 
 IMU     Invensensev3 SPI:icm40609 ROTATION_YAW_270
 IMU     BMI270       SPI:bmi270   ROTATION_YAW_180
 #COMPASS MMC5XX3      SPI:mmc5983  ROTATION_NONE
-BARO    BMP581       SPI:bmi585
+define AP_BARO_BMP581_BMP585_MODE
+BARO    BMP581       SPI:bmp585
 
 # =============!!! WARNING !!!================
 # MMC5XX3 natively has a left handed frame.

@@ -421,6 +421,12 @@ bool SPIDevice::acquire_bus(bool set, bool skip_cs)
 #if defined(STM32H7)
         bus.spicfg.cfg1 = freq_flag;
         bus.spicfg.cfg2 = device_desc.mode;
+#ifdef HAL_SPI1_SWAP_IO
+        // swap MISO/MOSI pin functions for boards with crossed SPI1 data lines
+        if (spi_devices[device_desc.bus].busid == 1) {
+            bus.spicfg.cfg2 |= SPI_CFG2_IOSWP;
+        }
+#endif
         if (bus.spicfg.dummytx == nullptr) {
             bus.spicfg.dummytx = (uint32_t *)malloc_dma(4);
             memset(bus.spicfg.dummytx, 0xFF, 4);
